@@ -128,28 +128,96 @@ private:
     for (int i = 0; i < dnaString.length(); i+=2)
     {
       dnaString2 = toupper(dnaString[i]);
-      switch (dnaString2)
+      char dnaString3 = toupper(dnaString[i+1]);
+      if (dnaString2 == 'A')
       {
-        case 'A':
-          aCounter++;
-        case 'T':
-          tCounter++;
-        case 'C':
-          cCounter++;
-        case 'D':
-          dCounter++;
-
-
-
-
+        aCounter++;
+          //bigram
+          if (dnaString3 == 'A')
+            {
+              aaCounter++;
+            }
+          else if (dnaString3 == 'T')
+            {
+              atCounter++;
+            }
+          else if (dnaString3 == 'G')
+            {
+              agCounter++;
+            }
+          else if (dnaString3 == 'C')
+            {
+              acCounter++;
+            }
+      }
+      else if (dnaString2 == 'T')
+      {
+        tCounter ++;
+        if (dnaString3 == 'A')
+          {
+            taCounter++;
+          }
+        else if (dnaString3 == 'T')
+          {
+            ttCounter++;
+          }
+        else if (dnaString3 == 'G')
+          {
+            tgCounter++;
+          }
+        else if (dnaString3 == 'C')
+          {
+            tcCounter++;
+          }
       }
 
+      if (dnaString2 == 'G')
+      {
+        gCounter ++;
+          if (dnaString3 == 'A')
+            {
+              gaCounter++;
+            }
+        else  if (dnaString3 == 'T')
+            {
+              gtCounter++;
+            }
+        else if (dnaString3 == 'G')
+            {
+              ggCounter++;
+            }
+        else if (dnaString3 == 'C')
+            {
+              gcCounter++;
+            }
+      }
+
+      if (dnaString2 == 'C')
+      {
+        cCounter ++;
+          if (dnaString3 == 'A')
+          {
+              caCounter++;
+          }
+          else if (dnaString3 == 'T')
+          {
+              ctCounter++;
+          }
+          else if (dnaString3 == 'G')
+          {
+              cgCounter++;
+          }
+          else if (dnaString3 == 'C')
+            {
+              ccCounter++;
+            }
+      }
     }
     sum = aCounter + tCounter + gCounter + cCounter;
     d3.Probability(aCounter, tCounter, gCounter, cCounter, sum, aaCounter, atCounter, agCounter, acCounter, caCounter, ccCounter, ctCounter, cgCounter, taCounter, tcCounter, ttCounter, tgCounter, gaCounter, gcCounter, gtCounter, ggCounter);
   }
 
-  /*float dna::Probability(float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
+  float dna::Probability(float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
   {
     float aProbability = ((float) aCounter / (float) sum);
     cout << "A: " << aProbability << endl;
