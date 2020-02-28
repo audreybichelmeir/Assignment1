@@ -14,6 +14,7 @@ Run file
 g++ main.cpp
 
 The Makefile is in Java... ooopps
+
 References:
 reading a file
 https://gist.github.com/stevedoyle/1319089
@@ -24,3 +25,6 @@ https://www.tutorialspoint.com/How-to-check-if-a-string-contains-a-certain-word-
 Rene
 Int2020 count vowels
   toUpperFunction
+
+Help
+Peter Chen - when user types n it break
