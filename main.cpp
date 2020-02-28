@@ -26,43 +26,11 @@ using namespace std;
 class dna
 {
 public:
+  string filePrompt(string user);
   bool fileIsGood(string file);
-  string toUpperFunction(string dnaString);
-  float Probability(float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter);
+  string toUpperFunction(float mean, float std, string dnaString);
+  float Probability(float mean2, float std2, float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter);
   int Gaussian();
-
-  float mean = 0.0;
-  float std = 0.0;
-  float dnaLength = 0.0;
-  float varFinal = 0.0;
-  float biSum = 0.0;
-  float sum = 0.0;
-
-  int aCounter = 0;
-  int tCounter = 0;
-  int gCounter = 0;
-  int cCounter = 0;
-  //bigram
-  //A
-  int aaCounter = 0;
-  int acCounter = 0;
-  int atCounter = 0;
-  int agCounter = 0;
-  //C
-  int caCounter = 0;
-  int ccCounter = 0;
-  int ctCounter = 0;
-  int cgCounter = 0;
-  //T
-  int taCounter = 0;
-  int tcCounter = 0;
-  int ttCounter = 0;
-  int tgCounter = 0;
-  //G
-  int gaCounter = 0;
-  int gcCounter = 0;
-  int gtCounter = 0;
-  int ggCounter = 0;
 private:
 };
 
@@ -70,10 +38,15 @@ private:
   {
     dna d2;
     string line = "";
+    float dnaLength = 0;
+    float sum = 0;
+    float mean = 0;
     //var
-    float var = 0.0;
-    float var2 = 0.0;
+    float var = 0;
+    float var2 = 0;
+    float varFinal = 0;
     //std
+    float std = 0;
     int lineCounter = 0;
     // dnaString
     string dnaString = "";
@@ -98,8 +71,6 @@ private:
       mean = dnaLength / lineCounter;
       //cout << "MEAN: " << mean << endl;
 
-      d2.toUpperFunction(dnaString);
-
       myfile.close();
       myfile.open(file);
       if (myfile.is_open())
@@ -118,7 +89,19 @@ private:
       std = sqrt(varFinal);
       //cout << "STD: " << std << endl;
 
-      d2.Probability(biSum, aCounter, tCounter, gCounter, cCounter, sum, aaCounter, atCounter, agCounter, acCounter, caCounter, ccCounter, ctCounter, cgCounter, taCounter, tcCounter, ttCounter, tgCounter, gaCounter, gcCounter, gtCounter, ggCounter);
+      ofstream dnaout;
+      dnaout.open("audreybichelmeir.txt");
+      dnaout << "Name: Audrey Bichelmeir" << "\n";
+      dnaout << "ID Number: 2327865" << "\n";
+      dnaout << "Section: CPSC 350-02" << "\n";
+      dnaout << "The Sum of the length of the DNA strings is: " << dnaLength << "\n";
+      dnaout << "The Mean of the length of the DNA strings is: " << mean << "\n";
+      dnaout << "The variance of the length of the DNA strings is: " << varFinal << "\n";
+      dnaout << "The Standard Deviation of the length of the DNA stings is " << std << "\n";
+
+      dnaout.close();//close reading file
+
+      d2.toUpperFunction(mean, std, dnaString);
     }
     else
     {
@@ -127,9 +110,36 @@ private:
     }
   }
 
-  string dna::toUpperFunction(string dnaString)
+  string dna::toUpperFunction(float mean, float std, string dnaString)
   {
-    cout << dnaString << endl;//single
+    float mean2 = mean;
+    float std2 = std;
+    //cout << dnaString << endl;//single
+    int aCounter = 0;
+    int tCounter = 0;
+    int gCounter = 0;
+    int cCounter = 0;
+    //bigram
+    //A
+    int aaCounter = 0;
+    int acCounter = 0;
+    int atCounter = 0;
+    int agCounter = 0;
+    //C
+    int caCounter = 0;
+    int ccCounter = 0;
+    int ctCounter = 0;
+    int cgCounter = 0;
+    //T
+    int taCounter = 0;
+    int tcCounter = 0;
+    int ttCounter = 0;
+    int tgCounter = 0;
+    //G
+    int gaCounter = 0;
+    int gcCounter = 0;
+    int gtCounter = 0;
+    int ggCounter = 0;
 
     float sum = 0;
     dna d3;
@@ -223,11 +233,18 @@ private:
       }
     }
     sum = aCounter + tCounter + gCounter + cCounter;
-    biSum = aaCounter + atCounter + agCounter + acCounter + caCounter + ccCounter + ctCounter + cgCounter + taCounter + tcCounter + ttCounter + tgCounter + gaCounter + gcCounter + gtCounter + ggCounter;
+    float biSum = aaCounter + atCounter + agCounter + acCounter + caCounter + ccCounter + ctCounter + cgCounter + taCounter + tcCounter + ttCounter + tgCounter + gaCounter + gcCounter + gtCounter + ggCounter;
+    d3.Probability(mean2, std2, biSum, aCounter, tCounter, gCounter, cCounter, sum, aaCounter, atCounter, agCounter, acCounter, caCounter, ccCounter, ctCounter, cgCounter, taCounter, tcCounter, ttCounter, tgCounter, gaCounter, gcCounter, gtCounter, ggCounter);
   }
 
-  float dna::Probability(float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
+  float dna::Probability(float mean2, float std2, float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
   {
+      dna d4;
+    float mean3 = mean2;
+    float std3 = std2;
+    cout << "MEAN 3: " << mean3 << endl;
+    cout << "STD 3: " << std3 << endl;
+
     float aProbability = ((float) aCounter / biSum);
     cout << "A: " << aProbability << endl;
     float tProbability = ((float) tCounter / biSum);
@@ -275,25 +292,7 @@ private:
     cout << "GC: " << gcProbability << endl;
 
     ofstream dnaout;
-    dnaout.open("yourname.txt");
-    dnaout << "Name: Audrey Bichelmeir" << "\n";
-    dnaout << "ID Number: 2327865" << "\n";
-    dnaout << "Section: CPSC 350-02" << "\n";
-    dnaout << "The Sum of the length of the DNA strings is: " << dnaLength << "\n";
-    dnaout << "The Mean of the length of the DNA strings is: " << mean << "\n";
-    dnaout << "The variance of the length of the DNA strings is: " << varFinal << "\n";
-    dnaout << "The Standard Deviation of the length of the DNA stings is " << std << "\n";
-
-    dnaout.close();//close reading file
-
-
-
-
-
-
-
-
-    dnaout.open("yourname.txt", std::ios_base::app);
+    dnaout.open("audreybichelmeir.txt", std::ios_base::app);
     dnaout << "Here is the relative probability of each nucleotide:" << "\n";
     dnaout << "A: " << aProbability << "\n";
     dnaout << "T: " << tProbability << "\n";
@@ -328,9 +327,7 @@ private:
       a = rand() / (double)RAND_MAX;
       b = rand() / (double)RAND_MAX;
       c = sqrt(-2.0 * log(a)) * cos(2.0 * M_PI * b);
-      float d = std * c + mean; // length of dna
-      cout << std << endl;
-
+      float d = std3 * c + mean3; // length of dna
 
       for (int j = 0; j < d; ++j)
       {
@@ -355,39 +352,110 @@ private:
 
       dnaout << "\n";
     }
-
-
   dnaout.close();
+  //finally asking for a file again
+   cout << "would you like to enter another file? Type 'Y' for yes and 'N' for no" << endl;
+  string userInput;
+  while(true)
+  {
+    cin >> userInput;
+    //toupper(userInput);
+
+    if (userInput == "Y" || "y"){
+      d4.filePrompt(userInput);
+    }
+    else if (userInput == "N" || "n"){
+      break;
+      exit(0);
+      //exit(1);
+      //exit(2);
+    }
+    else{
+      cout << "That is not correct!" << endl;
+      continue;
+    }
   }
 
+  }
 
+string dna::filePrompt(string user)
+{
+  ///
+  srand(time(NULL)); // resets rand #
+  int txtFinder;
+  dna d;
+  string file;
 
+  bool isGood = false; // borrowed intarray.cpp from Ryan Millares
+
+  while(!isGood)
+  {
+    cout << "Enter file name: (example: DNA.txt)" << endl;
+    cin >> file;
+    txtFinder = file.find(".txt");
+    if (txtFinder == string::npos) // does not contain txt
+    {
+      cout << "File Can not be found" << endl;
+      continue;
+    }
+    else { //contains txt
+    isGood = true;
+    cout << d.fileIsGood(file) << endl;
+    }
+  }
+  ///
+}
 
   int main (int argc, char ** argv)
   {
-    srand(time(NULL)); // resets rand #
     int txtFinder;
     dna d;
     string file;
+    bool isGood = false;
+    bool fileExist = false;
+    string error =  "File Can not be found";
 
-    bool isGood = false; // borrowed intarray.cpp from Ryan Millares
-
-    while(!isGood)
+    srand(time(NULL)); // resets rand #
+    if (argc > 1)
     {
-      cout << "Enter file name: (example: DNA.txt)" << endl;
-      cin >> file;
-      txtFinder = file.find(".txt");
-      if (txtFinder == string::npos) // does not contain txt
-      {
-        cout << "File Can not be found" << endl;
-        continue;
-      }
-      else { //contains txt
-      isGood = true;
-      cout << d.fileIsGood(file) << endl;
-      }
+        fileExist = true;
+        file = argv[1];
+        cout << "File Name: " << file << endl;
+
+        while(!isGood)
+        {
+          // cout << "Enter file name: (example: DNA.txt)" << endl;
+          // cin >> file;
+          txtFinder = file.find(".txt");
+          if (txtFinder == string::npos) // does not contain txt
+          {
+            cin >> error;
+            d.filePrompt(error);
+            break;
+          }
+          else { //contains txt
+          isGood = true;
+          cout << d.fileIsGood(file) << endl;
+          }
+        }
     }
 
-
+    // bool isGood = false; // borrowed intarray.cpp from Ryan Millares
+    //
+    // while(!isGood)
+    // {
+    //   // cout << "Enter file name: (example: DNA.txt)" << endl;
+    //   // cin >> file;
+    //   txtFinder = file.find(".txt");
+    //   if (txtFinder == string::npos) // does not contain txt
+    //   {
+    //     cout << "File Can not be found" << endl;
+    //     continue;
+    //   }
+    //   else { //contains txt
+    //   isGood = true;
+    //   cout << d.fileIsGood(file) << endl;
+    //   }
+    // }
     return 0;
   }
