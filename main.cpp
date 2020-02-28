@@ -353,26 +353,21 @@ private:
       dnaout << "\n";
     }
   dnaout.close();
-  //finally asking for a file again
-   cout << "would you like to enter another file? Type 'Y' for yes and 'N' for no" << endl;
-  string userInput;
-  string upperCaseUserInput;
+
+  string userInput = "";
+  // string upperCaseUserInput;
   while(true)
   {
+    //finally asking for a file again
+    cout << "would you like to enter another file? Type 'Y' for yes and 'N' for no" << endl;
     cin >> userInput;
-    for (int i = 0; i < userInput.length(); ++i)
-    {
-      upperCaseUserInput = toupper(userInput[i]);
-    }
 
-    if (upperCaseUserInput == "Y" || "y"){
+    if (userInput == "Y" || userInput == "y"){
       d4.filePrompt(userInput);
     }
-    else if (upperCaseUserInput == "N" || "n"){
-      exit(0);
+    else if (userInput == "N" || userInput == "n"){
+      break;
 
-      //exit(1);
-      //exit(2);
     }
     else{
       cout << "That is not correct!" << endl;
@@ -407,7 +402,6 @@ string dna::filePrompt(string user)
     cout << d.fileIsGood(file) << endl;
     }
   }
-  ///
 }
 
   int main (int argc, char ** argv)
@@ -442,24 +436,10 @@ string dna::filePrompt(string user)
           cout << d.fileIsGood(file) << endl;
           }
         }
+    } else
+    {
+      cout << "looks like the user did not input a file name in the command line... you are trash" << endl;
+      d.filePrompt(error);
     }
-
-    // bool isGood = false; // borrowed intarray.cpp from Ryan Millares
-    //
-    // while(!isGood)
-    // {
-    //   // cout << "Enter file name: (example: DNA.txt)" << endl;
-    //   // cin >> file;
-    //   txtFinder = file.find(".txt");
-    //   if (txtFinder == string::npos) // does not contain txt
-    //   {
-    //     cout << "File Can not be found" << endl;
-    //     continue;
-    //   }
-    //   else { //contains txt
-    //   isGood = true;
-    //   cout << d.fileIsGood(file) << endl;
-    //   }
-    // }
     return 0;
   }
