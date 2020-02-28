@@ -242,8 +242,8 @@ private:
       dna d4;
     float mean3 = mean2;
     float std3 = std2;
-    cout << "MEAN 3: " << mean3 << endl;
-    cout << "STD 3: " << std3 << endl;
+    //cout << "MEAN 3: " << mean3 << endl;
+    //cout << "STD 3: " << std3 << endl;
 
     float aProbability = ((float) aCounter / biSum);
     cout << "A: " << aProbability << endl;
@@ -356,17 +356,21 @@ private:
   //finally asking for a file again
    cout << "would you like to enter another file? Type 'Y' for yes and 'N' for no" << endl;
   string userInput;
+  string upperCaseUserInput;
   while(true)
   {
     cin >> userInput;
-    //toupper(userInput);
+    for (int i = 0; i < userInput.length(); ++i)
+    {
+      upperCaseUserInput = toupper(userInput[i]);
+    }
 
-    if (userInput == "Y" || "y"){
+    if (upperCaseUserInput == "Y" || "y"){
       d4.filePrompt(userInput);
     }
-    else if (userInput == "N" || "n"){
-      break;
+    else if (upperCaseUserInput == "N" || "n"){
       exit(0);
+
       //exit(1);
       //exit(2);
     }
