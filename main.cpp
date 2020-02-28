@@ -28,26 +28,55 @@ class dna
 public:
   bool fileIsGood(string file);
   string toUpperFunction(string dnaString);
-  float Probability(float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter);
+  float Probability(float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter);
+  int Gaussian();
+
+  float mean = 0.0;
+  float std = 0.0;
+  float dnaLength = 0.0;
+  float varFinal = 0.0;
+  float biSum = 0.0;
+  float sum = 0.0;
+
+  int aCounter = 0;
+  int tCounter = 0;
+  int gCounter = 0;
+  int cCounter = 0;
+  //bigram
+  //A
+  int aaCounter = 0;
+  int acCounter = 0;
+  int atCounter = 0;
+  int agCounter = 0;
+  //C
+  int caCounter = 0;
+  int ccCounter = 0;
+  int ctCounter = 0;
+  int cgCounter = 0;
+  //T
+  int taCounter = 0;
+  int tcCounter = 0;
+  int ttCounter = 0;
+  int tgCounter = 0;
+  //G
+  int gaCounter = 0;
+  int gcCounter = 0;
+  int gtCounter = 0;
+  int ggCounter = 0;
 private:
 };
 
   bool dna::fileIsGood(string file)
   {
     dna d2;
-    string line = " ";
-    double dnaLength = 0;
-    double sum = 0;
-    double mean = 0;
+    string line = "";
     //var
-    double var = 0;
-    double var2 = 0;
-    double varFinal = 0;
+    float var = 0.0;
+    float var2 = 0.0;
     //std
-    double std = 0;
     int lineCounter = 0;
     // dnaString
-    string dnaString = " ";
+    string dnaString = "";
     ifstream myfile (file);
     if (myfile.is_open())
     {
@@ -58,16 +87,19 @@ private:
         trim(str);
         lineCounter++;
         dnaString.append(line);
+        dnaString.append("\n");
         // sum
         var = str.length();
         dnaLength += str.length();
-        cout << "SUM: " << dnaLength << endl;
-        //mean
-        mean = dnaLength / lineCounter;
-        cout << "MEAN: " << mean << endl;
       }
+
+      //cout << "SUM: " << dnaLength << endl;
+      //mean
+      mean = dnaLength / lineCounter;
+      //cout << "MEAN: " << mean << endl;
+
       d2.toUpperFunction(dnaString);
-      return true;
+
       myfile.close();
       myfile.open(file);
       if (myfile.is_open())
@@ -81,46 +113,23 @@ private:
           var2 += (var - mean) * (var - mean);
         }
         varFinal = var2 / lineCounter;
-        cout << "VAR: " << varFinal << endl;
+        //cout << "VAR: " << varFinal << endl;
       }
       std = sqrt(varFinal);
-      cout << "STD: " << std << endl;
+      //cout << "STD: " << std << endl;
+
+      d2.Probability(biSum, aCounter, tCounter, gCounter, cCounter, sum, aaCounter, atCounter, agCounter, acCounter, caCounter, ccCounter, ctCounter, cgCounter, taCounter, tcCounter, ttCounter, tgCounter, gaCounter, gcCounter, gtCounter, ggCounter);
     }
     else
     {
       cout << "Unable to open file" << endl;
-      return false; // 0 - is not good & ask again where it's prompt would you like you to enter another file
+      // return false; // 0 - is not good & ask again where it's prompt would you like you to enter another file
     }
   }
 
   string dna::toUpperFunction(string dnaString)
   {
     cout << dnaString << endl;//single
-    int aCounter = 0;
-    int tCounter = 0;
-    int gCounter = 0;
-    int cCounter = 0;
-    //bigram
-    //A
-    int aaCounter = 0;
-    int acCounter = 0;
-    int atCounter = 0;
-    int agCounter = 0;
-    //C
-    int caCounter = 0;
-    int ccCounter = 0;
-    int ctCounter = 0;
-    int cgCounter = 0;
-    //T
-    int taCounter = 0;
-    int tcCounter = 0;
-    int ttCounter = 0;
-    int tgCounter = 0;
-    //G
-    int gaCounter = 0;
-    int gcCounter = 0;
-    int gtCounter = 0;
-    int ggCounter = 0;
 
     float sum = 0;
     dna d3;
@@ -214,61 +223,149 @@ private:
       }
     }
     sum = aCounter + tCounter + gCounter + cCounter;
-    d3.Probability(aCounter, tCounter, gCounter, cCounter, sum, aaCounter, atCounter, agCounter, acCounter, caCounter, ccCounter, ctCounter, cgCounter, taCounter, tcCounter, ttCounter, tgCounter, gaCounter, gcCounter, gtCounter, ggCounter);
+    biSum = aaCounter + atCounter + agCounter + acCounter + caCounter + ccCounter + ctCounter + cgCounter + taCounter + tcCounter + ttCounter + tgCounter + gaCounter + gcCounter + gtCounter + ggCounter;
   }
 
-  float dna::Probability(float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
+  float dna::Probability(float biSum, float aCounter, float tCounter, float gCounter, float cCounter, float sum, float aaCounter, float atCounter, float agCounter, float acCounter, float caCounter, float ccCounter, float ctCounter, float cgCounter, float taCounter, float tcCounter, float ttCounter, float tgCounter, float gaCounter, float gcCounter, float gtCounter, float ggCounter)
   {
-    float aProbability = ((float) aCounter / (float) sum);
+    float aProbability = ((float) aCounter / biSum);
     cout << "A: " << aProbability << endl;
-    float tProbability = ((float) tCounter / (float) sum);
+    float tProbability = ((float) tCounter / biSum);
     cout << "T: " << tProbability << endl;
-    float gProbability = ((float) gCounter / (float) sum);
+    float gProbability = ((float) gCounter / biSum);
     cout << "G: " << gProbability << endl;
-    float cProbability = ((float) cCounter / (float) sum);
+    float cProbability = ((float) cCounter / biSum);
     cout << "C: " << cProbability << endl;
     //bigram
     //A
-    float aaProbability = ((float) aaCounter / (float) sum);
+    float aaProbability = ((float) aaCounter / biSum);
     cout << "AA: " << aaProbability << endl;
-    float atProbability = ((float) atCounter / (float) sum);
+    float atProbability = ((float) atCounter / biSum);
     cout << "AT: " << atProbability << endl;
-    float agProbability = ((float) agCounter / (float) sum);
+    float agProbability = ((float) agCounter / biSum);
     cout << "AG: " << agProbability << endl;
-    float acProbability = ((float) acCounter / (float) sum);
+    float acProbability = ((float) acCounter / biSum);
     cout << "AC: " << acProbability << endl;
     //T
-    float taProbability = ((float) taCounter / (float) sum);
+    float taProbability = ((float) taCounter / biSum);
     cout << "TA: " << taProbability << endl;
-    float ttProbability = ((float) ttCounter / (float) sum);
+    float ttProbability = ((float) ttCounter / biSum);
     cout << "TT: " << ttProbability << endl;
-    float tgProbability = ((float) tgCounter / (float) sum);
+    float tgProbability = ((float) tgCounter / biSum);
     cout << "TG: " << tgProbability << endl;
-    float tcProbability = ((float) tcCounter / (float) sum);
+    float tcProbability = ((float) tcCounter / biSum);
     cout << "TC: " << tcProbability << endl;
     //C
-    float caProbability = ((float) caCounter / (float) sum);
+    float caProbability = ((float) caCounter / biSum);
     cout << "CA: " << caProbability << endl;
-    float ctProbability = ((float) ctCounter / (float) sum);
+    float ctProbability = ((float) ctCounter / biSum);
     cout << "CT: " << ctProbability << endl;
-    float cgProbability = ((float) cgCounter / (float) sum);
+    float cgProbability = ((float) cgCounter / biSum);
     cout << "CG: " << cgProbability << endl;
-    float ccProbability = ((float) ccCounter / (float) sum);
+    float ccProbability = ((float) ccCounter / biSum);
     cout << "CC: " << ccProbability << endl;
     //G
-    float gaProbability = ((float) gaCounter / (float) sum);
+    float gaProbability = ((float) gaCounter / biSum);
     cout << "GA: " << gaProbability << endl;
-    float gtProbability = ((float) gtCounter / (float) sum);
+    float gtProbability = ((float) gtCounter / biSum);
     cout << "GT: " << gtProbability << endl;
-    float ggProbability = ((float) ggCounter / (float) sum);
+    float ggProbability = ((float) ggCounter / biSum);
     cout << "GG: " << ggProbability << endl;
-    float gcProbability = ((float) gcCounter / (float) sum);
+    float gcProbability = ((float) gcCounter / biSum);
     cout << "GC: " << gcProbability << endl;
 
+    ofstream dnaout;
+    dnaout.open("yourname.txt");
+    dnaout << "Name: Audrey Bichelmeir" << "\n";
+    dnaout << "ID Number: 2327865" << "\n";
+    dnaout << "Section: CPSC 350-02" << "\n";
+    dnaout << "The Sum of the length of the DNA strings is: " << dnaLength << "\n";
+    dnaout << "The Mean of the length of the DNA strings is: " << mean << "\n";
+    dnaout << "The variance of the length of the DNA strings is: " << varFinal << "\n";
+    dnaout << "The Standard Deviation of the length of the DNA stings is " << std << "\n";
+
+    dnaout.close();//close reading file
+
+
+
+
+
+
+
+
+    dnaout.open("yourname.txt", std::ios_base::app);
+    dnaout << "Here is the relative probability of each nucleotide:" << "\n";
+    dnaout << "A: " << aProbability << "\n";
+    dnaout << "T: " << tProbability << "\n";
+    dnaout << "G: " << gProbability << "\n";
+    dnaout << "C: " << cProbability << "\n";
+    dnaout << "Here is the relative probability of each nucleotide bigram:" << "\n";
+    dnaout << "AA: " << aaProbability << "\n";
+    dnaout << "AT: " << atProbability << "\n";
+    dnaout << "AG: " << agProbability << "\n";
+    dnaout << "AC: " << acProbability << "\n";
+    dnaout << "TA: " << taProbability << "\n";
+    dnaout << "TT: " << ttProbability << "\n";
+    dnaout << "TG: " << tgProbability << "\n";
+    dnaout << "TC: " << tcProbability << "\n";
+    dnaout << "GA: " << gaProbability << "\n";
+    dnaout << "GT: " << gtProbability << "\n";
+    dnaout << "GG: " << ggProbability << "\n";
+    dnaout << "GC: " << gcProbability << "\n";
+    dnaout << "CA: " << caProbability << "\n";
+    dnaout << "CT: " << ctProbability << "\n";
+    dnaout << "CG: " << cgProbability << "\n";
+    dnaout << "CC: " << ccProbability << "\n";
+
+    float a = 0.0;
+    float b = 0.0;
+    float c = 0.0;
+    string dnaStringG = "";
+    dnaout << "Generated 1000 DNAs: \n";
+
+    for(int i = 0; i < 1000; ++i)
+    {
+      a = rand() / (double)RAND_MAX;
+      b = rand() / (double)RAND_MAX;
+      c = sqrt(-2.0 * log(a)) * cos(2.0 * M_PI * b);
+      float d = std * c + mean; // length of dna
+      cout << std << endl;
+
+
+      for (int j = 0; j < d; ++j)
+      {
+        float e = rand()/(double)RAND_MAX;
+        if(e > 0 && e <= aProbability)
+        {
+          dnaout << "A";
+        }
+        if(e > aProbability && e <= aProbability+tProbability )
+        {
+          dnaout << "T";
+        }
+        if(e > aProbability+tProbability && e <= aProbability+tProbability+gProbability)
+        {
+          dnaout << "G";
+        }
+        if(e > aProbability+tProbability+gProbability && e <= 1)
+        {
+          dnaout << "C";
+        }
+      }
+
+      dnaout << "\n";
+    }
+
+
+  dnaout.close();
   }
+
+
+
 
   int main (int argc, char ** argv)
   {
+    srand(time(NULL)); // resets rand #
     int txtFinder;
     dna d;
     string file;
@@ -282,14 +379,15 @@ private:
       txtFinder = file.find(".txt");
       if (txtFinder == string::npos) // does not contain txt
       {
-        cout << "you are trash" << endl;
+        cout << "File Can not be found" << endl;
         continue;
       }
       else { //contains txt
-        cout << "ok then" << endl;
       isGood = true;
       cout << d.fileIsGood(file) << endl;
       }
     }
+
+
     return 0;
   }

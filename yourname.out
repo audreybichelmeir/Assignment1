@@ -1,0 +1,29 @@
+Here is the relative probability of each nucleotide:
+A: 4
+T: 4
+G: 4
+C: 4
+Here is the relative probability of each nucleotide bigram:
+AA: 1
+AT: 1
+AG: 1
+AC: 1
+TA: 1
+TT: 1
+TG: 1
+TC: 1
+GA: 1
+GT: 1
+GG: 1
+GC: 1
+CA: 1
+CT: 1
+CG: 1
+CC: 1
+Name: Audrey Bichelmeir
+ID Number: 2327865
+Section: CPSC 350-02
+The Sum of the length of the DNA strings is: 32
+The Mean of the length of the DNA strings is: 6.4
+The variance of the length of the DNA strings is: 0.64
+The Standard Deviation of the length of the DNA stings is 0.8
